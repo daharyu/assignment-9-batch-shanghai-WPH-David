@@ -1,10 +1,8 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/3TNG_KHE)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20613272&assignment_repo_type=AssignmentRepo)
-# Todo List Application - Challenge 8
+# Challenge 9
 
 ## Overview
 
-This is a modern Todo List application built with React, TypeScript, and Vite as part of Challenge 8. The application demonstrates advanced React concepts including component architecture, state management, and best practices for building scalable frontend applications.
+This is E-Commerce application built with NextJS, TypeScript as part of Challenge 9. The application demonstrates advanced NextJS concepts including component architecture, state management, and best practices for building scalable frontend applications.
 
 ## Features
 
@@ -16,9 +14,8 @@ This is a modern Todo List application built with React, TypeScript, and Vite as
 
 ## Tech Stack
 
-- **Frontend Framework**: React 19.1.1
+- **Frontend Framework**: NextJS
 - **Language**: TypeScript
-- **Build Tool**: Vite 7.1.6
 - **Styling**: Tailwind CSS 4.1.13
 - **State Management**: TanStack React Query 5.89.0
 - **HTTP Client**: Axios 1.12.2
@@ -97,26 +94,31 @@ src/
 ## Installation & Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
-   cd t-challenge8-shanghai
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Configuration**
+
    ```bash
    cp .env.example .env
    ```
+
    Add your API URL:
+
    ```
-   VITE_PUBLIC_API_URL=https://todolistbeformentee-production.up.railway.app
+   NEXT_PUBLIC_API_URL=https://e-commerce-api-production-26ab.up.railway.app
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -129,6 +131,7 @@ src/
 ## API Integration
 
 The application integrates with the provided REST API:
+
 - **Base URL**: `https://todolistbeformentee-production.up.railway.app`
 - **Documentation**: Available at `/api-swagger/`
 - **HTTP Client**: Axios with interceptors for error handling
@@ -137,6 +140,7 @@ The application integrates with the provided REST API:
 ## Design System
 
 Based on the Figma design specifications:
+
 - **Design URL**: [Figma Design](https://www.figma.com/design/aCn08by4vkGF3VrY8HKwOD/To-Do-List---Batch-4?node-id=29411-12622&t=vRmAerLwZ3Oj7UV7-1)
 - **Responsive Layout**: Mobile-first approach
 - **Consistent Spacing**: Tailwind CSS utility classes
@@ -145,18 +149,21 @@ Based on the Figma design specifications:
 ## Development Guidelines
 
 ### Component Development
+
 - Use functional components with hooks
 - Implement proper TypeScript interfaces
 - Follow single responsibility principle
 - Create custom hooks for business logic
 
 ### State Management
+
 - Use React Query for server state
 - useState for local component state
 - Context API for shared application state
 - Avoid prop drilling when possible
 
 ### Code Quality
+
 - Run `npm run lint` before commits
 - Follow ESLint configuration
 - Use meaningful commit messages
@@ -212,4 +219,4 @@ This project addresses all evaluation criteria:
 
 ---
 
-Built with dedication for Challenge 8 - Library Application
+Built with dedication for Challenge 9 - Library Application
