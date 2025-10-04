@@ -22,29 +22,6 @@ This is E-Commerce application built with NextJS, TypeScript as part of Challeng
 - **Form Handling**: React Hook Form with Zod validation
 - **Linting**: ESLint 9.35.0
 
-## Project Structure
-
-```
-src/
-├── api/                    # API layer and HTTP client configuration
-├── components/
-│   ├── container/          # Feature-specific container components
-│   │   ├── FormExample/    # Example form component with custom hook
-│   │   ├── Tabs/          # Reusable tab component
-│   │   └── TodoForm/      # Todo form with validation
-│   ├── pages/             # Page-level components
-│   │   └── home/          # Home page with custom hook
-│   └── ui/                # Reusable UI components
-│       ├── button/        # Button component
-│       └── loader/        # Loading component
-├── config/                # Configuration files
-├── hooks/                 # Custom React hooks
-├── lib/                   # Utility libraries and validation schemas
-├── providers/             # React context providers
-├── services/              # Business logic and API services
-└── types/                 # TypeScript type definitions
-```
-
 ## Architecture Highlights
 
 ### Component Structure & Organization (30%)
@@ -132,7 +109,7 @@ src/
 
 The application integrates with the provided REST API:
 
-- **Base URL**: `https://todolistbeformentee-production.up.railway.app`
+- **Base URL**: `https://e-commerce-api-production-26ab.up.railway.app`
 - **Documentation**: Available at `/api-swagger/`
 - **HTTP Client**: Axios with interceptors for error handling
 - **State Management**: TanStack React Query for caching and synchronization
@@ -141,7 +118,7 @@ The application integrates with the provided REST API:
 
 Based on the Figma design specifications:
 
-- **Design URL**: [Figma Design](https://www.figma.com/design/aCn08by4vkGF3VrY8HKwOD/To-Do-List---Batch-4?node-id=29411-12622&t=vRmAerLwZ3Oj7UV7-1)
+- **Design URL**: [Figma Design](https://www.figma.com/design/W38k1PafXVD6LnAQo8lNWe/Ecommerce---Batch-4---V2?node-id=29411-12622&p=f&t=5fTIHhewMNSW24oI-0)
 - **Responsive Layout**: Mobile-first approach
 - **Consistent Spacing**: Tailwind CSS utility classes
 - **Accessibility**: ARIA labels and semantic HTML
@@ -191,31 +168,6 @@ npm run build    # Build for production
 npm run preview  # Preview production build
 npm run lint     # Run ESLint
 ```
-
-## Contributing
-
-1. Follow the established component structure
-2. Implement proper TypeScript types
-3. Add custom hooks for complex logic
-4. Ensure responsive design
-5. Run linting before committing
-
-## Evaluation Criteria Alignment
-
-This project addresses all evaluation criteria:
-
-- ✓ **Component Structure (30%)**: Modular, organized, and well-structured
-- ✓ **Props Handling (25%)**: Efficient data flow with TypeScript
-- ✓ **Conditional Rendering (15%)**: Clean logic and dynamic UI
-- ✓ **Reusable Components (10%)**: Shared UI components
-- ✓ **Code Clarity (10%)**: TypeScript, ESLint, and clean code
-- ✓ **Hook Usage (10%)**: Custom hooks and proper React patterns
-
-## Links
-
-- **API Documentation**: https://todolistbeformentee-production.up.railway.app/api-swagger/
-- **Design Reference**: https://www.figma.com/design/aCn08by4vkGF3VrY8HKwOD/To-Do-List---Batch-4
-- **Repository**: This project
 
 ---
 
