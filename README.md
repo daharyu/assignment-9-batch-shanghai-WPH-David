@@ -16,7 +16,7 @@ This is E-Commerce application built with NextJS, TypeScript as part of Challeng
 
 - **Frontend Framework**: NextJS
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS 4.1.13
+- **Styling**: Tailwind CSS 4.1.13, shadcn/ui
 - **State Management**: TanStack React Query 5.89.0
 - **HTTP Client**: Axios 1.12.2
 - **Form Handling**: React Hook Form with Zod validation

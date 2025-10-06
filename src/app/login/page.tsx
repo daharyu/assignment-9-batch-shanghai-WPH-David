@@ -18,6 +18,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
 import { z } from 'zod';
 import { loginUser } from '@/services/users.services';
+import { useRouter } from 'next/navigation';
 
 // Define AuthUser type (matching users.services.ts)
 interface AuthUser {
@@ -56,6 +57,7 @@ export default function LoginPage() {
     Partial<Record<keyof FormData, string>>
   >({});
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -96,6 +98,7 @@ export default function LoginPage() {
       };
       const result: ReponseLoginUser = await loginUser(loginData);
       console.log('Login successful:', result);
+      router.push('/products');
       localStorage.setItem('token', result.data?.token || '');
       localStorage.setItem('user', JSON.stringify(result.data?.user || ''));
     } catch (err: any) {
