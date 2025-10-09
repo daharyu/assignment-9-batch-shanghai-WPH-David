@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import React, { useState, useEffect } from 'react';
-import { getProductById } from '@/services/product.service';
+import { getProductById, postCart } from '@/services/product.service';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import Header from '@/components/header/page';
@@ -20,14 +21,45 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 
+type reviewData = {
+  id: number | string;
+  comment: string;
+  star: number;
+  user: {
+    name: string;
+    avatarUrl: string;
+  };
+  createdAt: string;
+};
+
 const ProductById = () => {
   const { id } = useParams();
   const { data, isLoading } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id as string),
   });
+  const [qty, setQty] = useState(1);
   const product = data?.data;
   const [selectedImage, setSelectedImage] = useState<string>('');
+
+  function formatDate(isoString: string) {
+    const date = new Date(isoString);
+
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+
+    let formatted = date.toLocaleString('en-GB', options);
+    formatted = formatted
+      .replace(/,/, '')
+      .replace(/(\d+)\s(\w+)\s(\d+)\sat\s(\d+):(\d+)/, '$1 $2 $3, $4:$5');
+
+    return formatted;
+  }
 
   // Update selectedImage when product data is available
   useEffect(() => {
@@ -49,6 +81,18 @@ const ProductById = () => {
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  const handleAddCart = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = {
+        productId: product.id,
+        qty: qty,
+        token: token,
+      };
+      await postCart(payload);
+    }
+  };
 
   return (
     <>
@@ -118,7 +162,7 @@ const ProductById = () => {
                   className='size-5 lg:size-6'
                 />
                 <span className='font-semibold text-sm lg:text-lg tracking-tighter'>
-                  {product.rating}
+                  {product.rating.toFixed(1)}
                 </span>
               </div>
             </div>
@@ -157,24 +201,75 @@ const ProductById = () => {
                 Quantity
               </span>
               <div className='flex gap-2 py-2 px-3 rounded-xl border border-[#D5D7DA] w-[120px] h-11 items-center justify-between'>
-                <button>
+                <button onClick={() => qty > 1 && setQty(qty - 1)}>
                   <Minus />
                 </button>
                 <span className='font-bold tracking-tighter text-lg leading-8'>
-                  2
+                  {qty}
                 </span>
-                <button>
+                <button onClick={() => setQty(qty + 1)}>
                   <Plus />
                 </button>
               </div>
             </div>
             {/* Button Add to Cart */}
-            <Button className='w-full p-2 lg:w-[312px] h-[48px] rounded-lg bg-[#0A0D12] text-[#FFFFFF] font-semibold tracking-tighter text-[16px] flex gap-1.5 justify-center items-center'>
+            <Button
+              className='w-full p-2 lg:w-[312px] h-[48px] rounded-lg bg-[#0A0D12] text-[#FFFFFF] font-semibold tracking-tighter text-[16px] flex gap-1.5 justify-center items-center'
+              onClick={handleAddCart}
+            >
               <Plus /> Add to Cart
             </Button>
           </div>
         </section>
         <hr className='border-[1px] border-[#D5D7DA] lg:w-[1200px]' />
+      </section>
+
+      <section className='w-[361px] lg:w-[1200px] flex flex-col  gap-4 lg:gap-7 mx-auto mt-10 '>
+        <h1 className='sub-judul w-full'>Product Reviews</h1>
+        <div className='flex gap-1 items-center'>
+          <Image src={imgStar} alt='Rating' className='size-6 lg:size-10' />
+          <p className='font-semibold text-sm lg:text-lg tracking-tighter'>
+            {product.rating.toFixed(1)}
+            <span className='text-[#414651]'>/ 5.0</span>
+          </p>
+        </div>
+        {product.reviews.map((review: reviewData) => (
+          <div className='flex flex-col gap-2' key={review.id}>
+            <div className='flex flex-row gap-4 items-center'>
+              <img
+                src={review.user.avatarUrl}
+                alt={review.user.name}
+                className='size-14 lg:size-16 lg:size-10 rounded-full'
+              />
+              <div className='flex flex-col gap-3'>
+                <p className='font-bold text-sm lg:text-lg tracking-tighter'>
+                  {review.user.name}
+                </p>
+                <p className='text-[#0A0D12]'>{formatDate(review.createdAt)}</p>
+              </div>
+            </div>
+
+            <div className='flex flex-col gap-2'>
+              <div className='flex gap-0.5'>
+                {Array.from({ length: review.star }).map((_, index) => (
+                  <Image
+                    key={index}
+                    src='/star.svg'
+                    width={24}
+                    height={24}
+                    alt='Rating'
+                    className='size-6'
+                  />
+                ))}
+              </div>
+
+              <p className='text-sm lg:text-[16px] text-[#0A0D12] tracking-tighter'>
+                {review.comment}
+              </p>
+            </div>
+            <hr className='border-[1px] border-[#D5D7DA] lg:w-[1200px] mt-5' />
+          </div>
+        ))}
       </section>
       <FooterPage />
     </>
