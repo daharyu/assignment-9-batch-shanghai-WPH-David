@@ -29,6 +29,20 @@ type productData = {
 const ProductCard = (product: any) => {
   const prod: productData = product?.product;
 
+  // Default placeholder image
+  const DEFAULT_IMAGE = './default-placeholder.png';
+
+  // Function to validate image URL
+  const isValidImageUrl = (url: string): boolean => {
+    return typeof url === 'string' && url !== 'string' && url.trim() !== '';
+  };
+
+  // Get the product image or fallback to default
+  const productImage =
+    prod.images && prod.images.length > 0 && isValidImageUrl(prod.images[0])
+      ? prod.images[0]
+      : DEFAULT_IMAGE;
+
   function formatRupiah(number: number) {
     return 'Rp' + number.toLocaleString('id-ID');
   }
@@ -41,7 +55,7 @@ const ProductCard = (product: any) => {
           <CardContent className='p-0'>
             <CardDescription>
               <img
-                src={prod.images[0]}
+                src={productImage}
                 className='product-image mx-auto'
                 alt=''
               />
