@@ -5,8 +5,8 @@ import NewCollectionSection from '@/components/newCollection/page';
 import ProductCard from '@/components/productCard/page';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { getAllProducts, getProductInfinite } from '@/services/product.service';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getProductInfinite } from '@/services/product.service';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { number } from 'zod';
 
 type ProductData = {
