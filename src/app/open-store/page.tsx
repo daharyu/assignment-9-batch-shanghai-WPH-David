@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,19 +10,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import imgLogo from '../../../public/Logo.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { z } from 'zod';
 import router from 'next/router';
+import { useState } from 'react';
+import { z } from 'zod';
+import imgLogo from '../../../public/Logo.svg';
 
 // Define AuthShop type (matching API expectations)
-interface AuthShop {
-  name: string;
-  slug: string;
-  address: string;
-  logo?: File; // File for client-side, sent as binary in FormData
-}
 
 const registerSchema = z.object({
   name: z

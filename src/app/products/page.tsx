@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { getProductInfinite } from '@/services/product.service';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { number } from 'zod';
 
 type ProductData = {
   id: number | string;
@@ -33,9 +32,20 @@ type ProductResponse = {
   };
 };
 
+interface InfiniteData<TData> {
+  pages: TData[];
+  pageParams: unknown[];
+}
+
 const Products = () => {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<ProductResponse, Error>({
+    useInfiniteQuery<
+      ProductResponse,
+      Error,
+      InfiniteData<ProductResponse>,
+      ['products'],
+      number
+    >({
       queryKey: ['products'],
       queryFn: ({ pageParam = 1 }) => getProductInfinite(pageParam),
       initialPageParam: 1,

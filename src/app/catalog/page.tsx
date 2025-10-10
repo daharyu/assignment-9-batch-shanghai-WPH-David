@@ -3,12 +3,10 @@ import FooterPage from '@/components/footer/page';
 import Header from '@/components/header/page';
 import ProductCard from '@/components/productCard/page';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
-import {
-  getAllProductsCatalog,
-  getProductInfinite,
-} from '@/services/product.service';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getProductInfinite } from '@/services/product.service';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 
@@ -30,15 +28,27 @@ type Pagination = {
 type ProductResponse = {
   success: boolean;
   message: string;
+
   data: {
     products: ProductData[];
     pagination: Pagination;
   };
 };
 
+interface InfiniteData<TData> {
+  pages: TData[];
+  pageParams: unknown[];
+}
+
 const CatalogPage = () => {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<ProductResponse, Error>({
+    useInfiniteQuery<
+      ProductResponse,
+      Error,
+      InfiniteData<ProductResponse>,
+      ['products'],
+      number
+    >({
       queryKey: ['products'],
       queryFn: ({ pageParam = 1 }) => getProductInfinite(pageParam),
       initialPageParam: 1,
@@ -53,7 +63,7 @@ const CatalogPage = () => {
     });
 
   const products: ProductData[] =
-    data?.pages.flatMap((page) => page.data.products) || [];
+    data?.pages?.flatMap((page) => page.data.products) ?? [];
   return (
     <>
       <Header />
@@ -77,9 +87,8 @@ const CatalogPage = () => {
                   </p>
                   <div className='flex flex-col gap-2'>
                     <label className='flex items-center gap-2'>
-                      <input
+                      <Input
                         type='checkbox'
-                        checked
                         className='size-4 rounded border-[#D5D7DA]'
                       />
                       <span>All</span>
@@ -245,7 +254,7 @@ const CatalogPage = () => {
               <div className='px-4 py-2 lg:p-0'>
                 {isLoading && <Spinner className='size-15 mx-auto' />}
                 <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5'>
-                  {products.map((product: productData) => (
+                  {products.map((product) => (
                     <ProductCard product={product} key={product.id} />
                   ))}
                 </div>

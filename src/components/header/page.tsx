@@ -1,16 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
+//  eslint-disable @next/next/no-img-element
 'use client';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
-import imgLogo from '../../../public/Logo.svg';
-import imgSearch from '../../../public/Search.svg';
-import imgGrid from '../../../public/Grid.svg';
-import imgCart from '../../../public/shopping-cart-01.svg';
-import imgMenu from '../../../public/Menu.svg';
-import imgStore from '../../../public/Store.svg';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import imgGrid from '../../../public/Grid.svg';
+import imgLogo from '../../../public/Logo.svg';
+import imgMenu from '../../../public/Menu.svg';
+import imgSearch from '../../../public/Search.svg';
+import imgCart from '../../../public/shopping-cart-01.svg';
+import imgStore from '../../../public/Store.svg';
 import { Button } from '../ui/button';
-import { DropdownMenuDemo } from '../dropDown/page';
 
 interface Profile {
   avatarUrl: string;
@@ -38,12 +37,10 @@ const Header = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [haveShop, setHaveShop] = useState<Shop | null>(null);
   const [cart, setCart] = useState<Cart | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchShop = async (token: string) => {
     try {
-      setIsLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/seller/shop`,
         {
@@ -67,14 +64,11 @@ const Header = () => {
     } catch (err) {
       console.error('Error fetching shop:', err);
       setError('Failed to load shop data');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const fetchCart = async (token: string) => {
     try {
-      setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart`, {
         method: 'GET',
         headers: {
@@ -95,8 +89,6 @@ const Header = () => {
     } catch (err) {
       console.error('Error fetching cart:', err);
       setError('Failed to load cart data');
-    } finally {
-      setIsLoading(false);
     }
   };
 

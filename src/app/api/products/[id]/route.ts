@@ -1,26 +1,25 @@
 import { axiosAuthInstance } from '@/api/axiosClientInstance';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-type Params = {
-  params: {
-    id: string;
-  };
-};
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id } = params;
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     const res = await axiosAuthInstance.get(`/api/products/${id}`);
     return NextResponse.json(res.data);
-  } catch (error: Error | unknown) {
-    console.log(error);
+  } catch (error: unknown) {
+    console.error('Error fetching product:', error);
     return NextResponse.error();
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const { token, productId, qty } = await req.json();
+    const { token, productId, qty } = await request.json();
 
     // Validate the payload
     if (!token || !productId || qty == null) {
@@ -32,6 +31,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,

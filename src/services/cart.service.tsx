@@ -2,7 +2,7 @@ import { axiosAuthInstance } from '@/api/axiosClientInstance';
 import { NextResponse } from 'next/server';
 
 type PropsCart = {
-  itemId: string;
+  itemId: string | number;
   token: string;
 };
 
