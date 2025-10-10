@@ -45,6 +45,7 @@ const CartPage = () => {
     try {
       await deleteById(payload);
       console.log('Cart item deleted successfully');
+      console.log(token);
     } catch (error) {
       console.error('Error deleting cart item:', error);
     }

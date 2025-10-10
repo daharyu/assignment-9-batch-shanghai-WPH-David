@@ -91,7 +91,6 @@ const Header = () => {
       if (data.success) {
         localStorage.setItem('cart', JSON.stringify(data.data));
         setCart(data.data);
-        console.log(data.data);
       }
     } catch (err) {
       console.error('Error fetching cart:', err);

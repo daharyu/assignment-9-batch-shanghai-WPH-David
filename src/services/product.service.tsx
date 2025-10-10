@@ -1,3 +1,4 @@
+import { axiosAuthInstance } from '@/api/axiosClientInstance';
 import { axiosInstance } from '@/api/axiosInstance';
 
 type PropsCart = {
@@ -8,6 +9,19 @@ type PropsCart = {
 
 export const getAllProducts = async () => {
   const res = await axiosInstance.get(`/products`);
+  return res.data;
+};
+
+export const getProductInfinite = async (pageParam: number = 1) => {
+  const res = await axiosAuthInstance.get(`/api/products`, {
+    params: {
+      page: pageParam,
+    },
+  });
+  return res.data;
+};
+export const getAllProductsCatalog = async () => {
+  const res = await axiosInstance.get(`/catalog`);
   return res.data;
 };
 

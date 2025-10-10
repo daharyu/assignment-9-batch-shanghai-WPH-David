@@ -5,10 +5,11 @@ import NewCollectionSection from '@/components/newCollection/page';
 import ProductCard from '@/components/productCard/page';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { getAllProducts } from '@/services/product.service';
-import { useQuery } from '@tanstack/react-query';
+import { getAllProducts, getProductInfinite } from '@/services/product.service';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { number } from 'zod';
 
-type productData = {
+type ProductData = {
   id: number | string;
   title: string;
   price: number;
@@ -18,18 +19,39 @@ type productData = {
   soldCount: number;
 };
 
-type pagination = {
+type Pagination = {
   page: number;
   totalPages: number;
 };
 
+type ProductResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    products: ProductData[];
+    pagination: Pagination;
+  };
+};
+
 const Products = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => getAllProducts(),
-  });
-  const products: productData[] = data?.data.products || [];
-  const pagination: pagination = data?.data.pagination || {};
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery<ProductResponse, Error>({
+      queryKey: ['products'],
+      queryFn: ({ pageParam = 1 }) => getProductInfinite(pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (
+          lastPage.data.pagination.page < lastPage.data.pagination.totalPages
+        ) {
+          return lastPage.data.pagination.page + 1;
+        }
+        return undefined;
+      },
+    });
+
+  const products: ProductData[] =
+    data?.pages.flatMap((page) => page.data.products) || [];
+
   return (
     <>
       <Header />
@@ -39,14 +61,18 @@ const Products = () => {
           <h1 className='sub-judul mb-2.5 lg:mb-7'>Featured Product</h1>
           {isLoading && <Spinner className='size-15 mx-auto' />}
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5'>
-            {products.map((product: productData) => (
+            {products.map((product) => (
               <ProductCard product={product} key={product.id} />
             ))}
           </div>
         </div>
-        {pagination.page < pagination.totalPages && (
-          <Button className='w-[160px] lg:w-[220px] h-[48px] rounded-xl border-[1px] border-[#D5D7DA] p-2 font-sfpro-semi-bold text-[16px] leading-[30px] tracking-tighter mx-auto bg-transparent hover:bg-gray-200 text-black cursor-pointer'>
-            Load More
+        {hasNextPage && (
+          <Button
+            className='w-[160px] lg:w-[220px] h-[48px] rounded-xl border-[1px] border-[#D5D7DA] p-2 font-sfpro-semi-bold text-[16px] leading-[30px] tracking-tighter mx-auto bg-transparent hover:bg-gray-200 text-black cursor-pointer'
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Loading...' : 'Load More'}
           </Button>
         )}
       </section>
